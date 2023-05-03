@@ -1,25 +1,73 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { Panel, PanelGroup } from "react-resizable-panels";
 
-function App() {
+import ResizeHandle from "./ResizeHandle";
+import styles from "./styles.module.css";
+
+export default function App() {
+  const [showFirstPanel, setShowFirstPanel] = useState(true);
+  const [showLastPanel, setShowLastPanel] = useState(true);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+    <div className={styles.Container}>
+      <h1>react-resizable-panels</h1>
+      <div className={styles.TopRow}>
         <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+          className={styles.Link}
+          href="https://github.com/bvaughn/react-resizable-panels"
         >
-          Learn React
+          github.com/bvaughn/react-resizable-panels
         </a>
-      </header>
+
+        <p>
+          <button
+            className={styles.Button}
+            onClick={() => setShowFirstPanel(!showFirstPanel)}
+          >
+            {showFirstPanel ? "hide" : "show"} top panel
+          </button>
+          &nbsp;
+          <button
+            className={styles.Button}
+            onClick={() => setShowLastPanel(!showLastPanel)}
+          >
+            {showLastPanel ? "hide" : "show"} bottom panel
+          </button>
+        </p>
+      </div>
+      <div className={styles.BottomRow}>
+        <PanelGroup autoSaveId="example" direction="vertical">
+          {showFirstPanel && (
+            <>
+              <Panel
+                className={styles.Panel}
+                collapsible={true}
+                defaultSize={20}
+                order={1}
+              >
+                <div className={styles.PanelContent}>top</div>
+              </Panel>
+              <ResizeHandle />
+            </>
+          )}
+          <Panel className={styles.Panel} collapsible={true} order={2}>
+            <div className={styles.PanelContent}>middle</div>
+          </Panel>
+          {showLastPanel && (
+            <>
+              <ResizeHandle />
+              <Panel
+                className={styles.Panel}
+                collapsible={true}
+                defaultSize={20}
+                order={3}
+              >
+                <div className={styles.PanelContent}>bottom</div>
+              </Panel>
+            </>
+          )}
+        </PanelGroup>
+      </div>
     </div>
   );
 }
-
-export default App;
